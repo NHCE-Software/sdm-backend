@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
 
-
 import { User } from '../models/user.js';
 
 const { toInputObjectType } = require('graphql-compose');

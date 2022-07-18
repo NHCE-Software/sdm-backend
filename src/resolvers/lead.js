@@ -38,81 +38,83 @@ const getStudents = {
                 page: args.record.page,
                 limit: args.record.limit,
             };
-            let clientfilter = args.record.filter
+            let clientfilter = args.record.filter;
             const filter = {
                 stream: args.record.filter.stream,
                 branch: args.record.filter.branch,
-                $and:[],
-                
-            }
+                grade: {
+                    board12: args.record.filter.board,
+                },
+                $and: [],
+            };
             // if('markscard10th' in clientfilter.docs){
-                if(clientfilter.docs.markscard10th === 'Not Submitted'){
-                    filter.$and.push({
-                        'docs.docname': {
-                            $ne: '10th'
-                        }
-                    })
-                }
-                if(args.record.filter.docs.markscard10th === 'Submitted'){
-                    filter.$and.push({
-                        'docs.docname': {
-                            $eq: '10th'
-                        }
-                    })
-                }
-            
-            
-            if(args.record.filter.docs.markscard12th === 'Not Submitted'){
+            if (clientfilter.docs.markscard10th === 'Not Submitted') {
                 filter.$and.push({
                     'docs.docname': {
-                        $ne: '12th'
-                    }
-                })
+                        $ne: '10th',
+                    },
+                });
             }
-            if(args.record.filter.docs.markscard12th === 'Submitted'){
+            if (args.record.filter.docs.markscard10th === 'Submitted') {
                 filter.$and.push({
                     'docs.docname': {
-                        $eq: '12th'
-                    }
-                })
+                        $eq: '10th',
+                    },
+                });
             }
-            if(args.record.filter.docs.tc === 'Not Submitted'){
-                filter.$and.push({
-                    'docs.docname': {
-                        $ne: 'TC'
-                    }
-                })
-            }
-            if(args.record.filter.docs.tc === 'Submitted'){
-                filter.$and.push({
-                    'docs.docname': {
-                        $eq: 'TC'
-                    }
-                })
-            }
-            if(args.record.filter.docs.mig === 'Submitted'){
-                filter.$and.push({
-                    'docs.docname': {
-                        $eq: 'MIG'
-                    }
-                })
-            }
-            if(args.record.filter.docs.mig === 'Not Submitted'){
-                filter.$and.push({
-                    'docs.docname': {
-                        $ne: 'MIG'
-                    }
-                })
-            }
-            Object.keys(filter).forEach(key => {
-                if (filter[key] === undefined) {
-                  delete filter[key];
-                }
-              });
-              if (filter.$and.length === 0) { delete filter.$and; }
-            
-            console.log(filter)
 
+            if (args.record.filter.docs.markscard12th === 'Not Submitted') {
+                filter.$and.push({
+                    'docs.docname': {
+                        $ne: '12th',
+                    },
+                });
+            }
+            if (args.record.filter.docs.markscard12th === 'Submitted') {
+                filter.$and.push({
+                    'docs.docname': {
+                        $eq: '12th',
+                    },
+                });
+            }
+            if (args.record.filter.docs.tc === 'Not Submitted') {
+                filter.$and.push({
+                    'docs.docname': {
+                        $ne: 'TC',
+                    },
+                });
+            }
+            if (args.record.filter.docs.tc === 'Submitted') {
+                filter.$and.push({
+                    'docs.docname': {
+                        $eq: 'TC',
+                    },
+                });
+            }
+            if (args.record.filter.docs.mig === 'Submitted') {
+                filter.$and.push({
+                    'docs.docname': {
+                        $eq: 'MIG',
+                    },
+                });
+            }
+            if (args.record.filter.docs.mig === 'Not Submitted') {
+                filter.$and.push({
+                    'docs.docname': {
+                        $ne: 'MIG',
+                    },
+                });
+            }
+            Object.keys(filter).forEach((key) => {
+                if (filter[key] === undefined) {
+                    delete filter[key];
+                }
+            });
+            if (filter.$and.length === 0) {
+                delete filter.$and;
+            }
+
+            console.log(filter);
 
             const students = await Student.find(filter)
                 .limit(options.limit * 1)
@@ -124,7 +126,7 @@ const getStudents = {
                 students,
                 total: Math.ceil(total / options.limit),
                 currentPage: options.page,
-                filter: filter
+                filter: filter,
             };
         } catch (error) {
             console.log(error);
