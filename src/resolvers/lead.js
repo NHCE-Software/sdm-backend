@@ -45,7 +45,7 @@ const getStudents = {
                 $and:[],
                 
             }
-            if('markscard10th' in clientfilter.docs){
+            // if('markscard10th' in clientfilter.docs){
                 if(clientfilter.docs.markscard10th === 'Not Submitted'){
                     filter.$and.push({
                         'docs.docname': {
@@ -60,7 +60,7 @@ const getStudents = {
                         }
                     })
                 }
-            }
+            
             
             if(args.record.filter.docs.markscard12th === 'Not Submitted'){
                 filter.$and.push({
