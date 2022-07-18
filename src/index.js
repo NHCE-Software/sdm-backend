@@ -26,7 +26,7 @@ async function startApolloServer() {
         httpServer.listen({ port: process.env.PORT || 2024 }, resolve)
     );
     console.log(
-        `🚀 Server ready at http://localhost:${process.env.PORT || 2022}${
+        `🚀 Server ready at http://localhost:${process.env.PORT || 2024}${
             server.graphqlPath
         }`
     );
