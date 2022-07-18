@@ -35,27 +35,28 @@ const getStudents = {
     resolve: async ({ args, context: { user } }) => {
         try {
             const options = {
-                page: 1,
-                limit: 2,
+                page: args.record.page,
+                limit: args.record.limit,
             };
             let clientfilter = args.record.filter
             const filter = {
                 stream: args.record.filter.stream,
                 branch: args.record.filter.branch,
+                $and:[],
                 
             }
             if('markscard10th' in clientfilter.docs){
                 if(clientfilter.docs.markscard10th === 'Not Submitted'){
                     filter.$and.push({
-                        'docs.docname.10th': {
-                            $ne: 'Submitted'
+                        'docs.docname': {
+                            $ne: '10th'
                         }
                     })
                 }
                 if(args.record.filter.docs.markscard10th === 'Submitted'){
                     filter.$and.push({
-                        'docs.docname.10th': {
-                            $eq: 'Submitted'
+                        'docs.docname': {
+                            $eq: '10th'
                         }
                     })
                 }
@@ -63,43 +64,43 @@ const getStudents = {
             
             if(args.record.filter.docs.markscard12th === 'Not Submitted'){
                 filter.$and.push({
-                    'docs.docname.12th': {
-                        $ne: 'Submitted'
+                    'docs.docname': {
+                        $ne: '12th'
                     }
                 })
             }
             if(args.record.filter.docs.markscard12th === 'Submitted'){
                 filter.$and.push({
-                    'docs.docname.12th': {
-                        $eq: 'Submitted'
+                    'docs.docname': {
+                        $eq: '12th'
                     }
                 })
             }
             if(args.record.filter.docs.tc === 'Not Submitted'){
                 filter.$and.push({
-                    'docs.docname.TC': {
-                        $ne: 'Submitted'
+                    'docs.docname': {
+                        $ne: 'TC'
                     }
                 })
             }
             if(args.record.filter.docs.tc === 'Submitted'){
                 filter.$and.push({
-                    'docs.docname.TC': {
-                        $eq: 'Submitted'
+                    'docs.docname': {
+                        $eq: 'TC'
                     }
                 })
             }
             if(args.record.filter.docs.mig === 'Submitted'){
                 filter.$and.push({
-                    'docs.docname.MIG': {
-                        $eq: 'Submitted'
+                    'docs.docname': {
+                        $eq: 'MIG'
                     }
                 })
             }
             if(args.record.filter.docs.mig === 'Not Submitted'){
                 filter.$and.push({
-                    'docs.docname.MIG': {
-                        $ne: 'Submitted'
+                    'docs.docname': {
+                        $ne: 'MIG'
                     }
                 })
             }
@@ -108,6 +109,7 @@ const getStudents = {
                   delete filter[key];
                 }
               });
+              if (filter.$and.length === 0) { delete filter.$and; }
             
             console.log(filter)
 
@@ -115,7 +117,6 @@ const getStudents = {
             const students = await Student.find(filter)
                 .limit(options.limit * 1)
                 .skip((options.page - 1) * options.limit)
-
                 .exec();
             const total = await Student.countDocuments();
             console.log(students);
@@ -123,6 +124,7 @@ const getStudents = {
                 students,
                 total: Math.ceil(total / options.limit),
                 currentPage: options.page,
+                filter: filter
             };
         } catch (error) {
             console.log(error);
