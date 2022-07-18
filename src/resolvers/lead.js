@@ -124,7 +124,8 @@ const getStudents = {
             console.log(students);
             return {
                 students,
-                total: Math.ceil(total / options.limit),
+                totalpages: Math.ceil(total / options.limit),
+                totalrecords: total,
                 currentPage: options.page,
                 filter: filter,
             };
