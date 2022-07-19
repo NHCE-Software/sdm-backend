@@ -44,6 +44,10 @@ const getStudents = {
                 branch: args.record.filter.branch,
                 grade: {
                     board12: args.record.filter.board,
+                    pcmscore: {
+                        $gte: args.record.filter.score.lb,
+                        $lte: args.record.filter.score.ub,
+                    },
                 },
                 $and: [],
             };
@@ -110,7 +114,16 @@ const getStudents = {
                     delete filter[key];
                 }
             });
-            if(filter.grade.board12 === undefined){
+            if (filter.grade.board12 === undefined) {
+                delete filter.grade.board12;
+            }
+            if (filter.grade.score === undefined) {
+                delete filter.grade.score;
+            }
+            if (
+                filter.grade.board12 === undefined &&
+                filter.grade.score === undefined
+            ) {
                 delete filter.grade;
             }
             if (filter.$and.length === 0) {
