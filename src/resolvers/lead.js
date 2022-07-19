@@ -111,7 +111,7 @@ const getStudents = {
                 }
             });
             if(filter.grade.board12 === undefined){
-                delete filter.grade.board12;
+                delete filter.grade;
             }
             if (filter.$and.length === 0) {
                 delete filter.$and;
