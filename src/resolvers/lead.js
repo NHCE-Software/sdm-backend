@@ -110,6 +110,9 @@ const getStudents = {
                     delete filter[key];
                 }
             });
+            if(filter.grade.board12 === undefined){
+                delete filter.grade.board12;
+            }
             if (filter.$and.length === 0) {
                 delete filter.$and;
             }
