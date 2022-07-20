@@ -45,8 +45,12 @@ const getStudents = {
                 grade: {
                     board12: args.record.filter.board,
                     pcmscore: {
-                        $gte: args.record.filter.score.lb,
-                        $lte: args.record.filter.score.ub,
+                        $and:[
+                            
+                            {$expr: {  $gte: [ { $toDouble: "$pcmscore" },args.record.filter.score.lb  ] } },
+                            
+                            {$expr: { $lte: [ { $toDouble: "$pcmscore" }, args.record.filter.score.ub]} }
+                            ]
                     },
                 },
                 $and: [],
