@@ -38,115 +38,9 @@ const getStudents = {
                 page: args.record.page,
                 limit: args.record.limit,
             };
+            console.log(args.record);
             let clientfilter = args.record.filter;
-            const filter = {
-                stream: args.record.filter.stream,
-                branch: args.record.filter.branch,
-                grade: {
-                    board12: args.record.filter.board,
-                    pcmscore: {
-                        $expr: {
-                            $and: [
-                                {
-                                    $gte: [
-                                        { $toDouble: '$pcmscore' },
-                                        args.record.filter.score.lb,
-                                    ],
-                                },
-                                {
-                                    $lte: [
-                                        { $toDouble: '$pcmscore' },
-                                        args.record.filter.score.ub,
-                                    ],
-                                },
-                            ],
-                        },
-                    },
-                },
-                $and: [],
-            };
-            // if('markscard10th' in clientfilter.docs){
-            if (clientfilter.docs.markscard10th === 'Not Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $ne: '10th',
-                    },
-                });
-            }
-            if (args.record.filter.docs.markscard10th === 'Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $eq: '10th',
-                    },
-                });
-            }
-
-            if (args.record.filter.docs.markscard12th === 'Not Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $ne: '12th',
-                    },
-                });
-            }
-            if (args.record.filter.docs.markscard12th === 'Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $eq: '12th',
-                    },
-                });
-            }
-            if (args.record.filter.docs.tc === 'Not Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $ne: 'TC',
-                    },
-                });
-            }
-            if (args.record.filter.docs.tc === 'Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $eq: 'TC',
-                    },
-                });
-            }
-            if (args.record.filter.docs.mig === 'Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $eq: 'MIG',
-                    },
-                });
-            }
-            if (args.record.filter.docs.mig === 'Not Submitted') {
-                filter.$and.push({
-                    'docs.docname': {
-                        $ne: 'MIG',
-                    },
-                });
-            }
-            Object.keys(filter).forEach((key) => {
-                if (filter[key] === undefined) {
-                    delete filter[key];
-                }
-            });
-            if (filter.grade.board12 === undefined) {
-                delete filter.grade.board12;
-            }
-            if (filter.grade.pcmscore === undefined) {
-                delete filter.grade.pcmscore;
-            }
-            if (
-                filter.grade.board12 === undefined &&
-                filter.grade.pcmscore === undefined
-            ) {
-                delete filter.grade;
-            }
-            if (filter.$and.length === 0) {
-                delete filter.$and;
-            }
-
-            console.log(filter);
-
-            const students = await Student.find(filter)
+            const students = await Student.find(clientfilter)
                 .limit(options.limit * 1)
                 .skip((options.page - 1) * options.limit)
                 .exec();
@@ -157,7 +51,7 @@ const getStudents = {
                 totalpages: Math.ceil(total / options.limit),
                 totalrecords: total,
                 currentPage: options.page,
-                filter: filter,
+                filter: clientfilter,
             };
         } catch (error) {
             console.log(error);

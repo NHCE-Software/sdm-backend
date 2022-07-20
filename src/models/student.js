@@ -115,7 +115,7 @@ export const StudentSchema = new Schema(
                 type: String,
             },
             pcmscore: {
-                type: String,
+                type: mongoose.Schema.Types.Number,
             },
             modeofcal: {
                 type: String,
