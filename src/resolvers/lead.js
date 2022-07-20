@@ -121,12 +121,12 @@ const getStudents = {
             if (filter.grade.board12 === undefined) {
                 delete filter.grade.board12;
             }
-            if (filter.grade.score === undefined) {
-                delete filter.grade.score;
+            if (filter.grade.pcmscore === undefined) {
+                delete filter.grade.pcmscore;
             }
             if (
                 filter.grade.board12 === undefined &&
-                filter.grade.score === undefined
+                filter.grade.pcmscore === undefined
             ) {
                 delete filter.grade;
             }
