@@ -13,7 +13,7 @@ const addStudents = {
             await Student.bulkWrite(
                 leads.map((doc) => ({
                     updateOne: {
-                        filter: { phonenumber: doc.phonenumber },
+                        filter: { phonenumber: doc.internal.enqno },
                         update: doc,
                         upsert: true,
                     },
