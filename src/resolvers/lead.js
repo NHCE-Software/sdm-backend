@@ -59,7 +59,29 @@ const getStudents = {
     },
 };
 
+const distinctValues = {
+    name: 'distinctValues',
+    type: 'JSON',
+    args: { record: 'JSON' },
+    resolve: async ({ args, context: { user } }) => {
+        try {
+            const stream = await Student.distinct('stream');
+            const branch = await Student.distinct('branch');
+            const board12 = await Student.distinct('grade.board12');
+            let result = {
+                stream: stream,
+                branch: branch,
+                board12: board12,
+            };
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+};
+
 module.exports = {
     addStudents,
     getStudents,
+    distinctValues
 };

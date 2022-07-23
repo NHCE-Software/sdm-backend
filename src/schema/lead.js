@@ -3,10 +3,12 @@ import { StudentTC } from '../models/student';
 import {
     addStudents,
     getStudents,
+    distinctValues,
 } from '../resolvers/lead';
 
 StudentTC.addResolver(addStudents);
 StudentTC.addResolver(getStudents);
+StudentTC.addResolver(distinctValues);
 
 StudentTC.getResolver('findMany').addFilterArg({
     name: 'bycalls',
@@ -25,6 +27,7 @@ const LeadQuery = {
     leadCount: StudentTC.getResolver('count'),
     leadConnection: StudentTC.getResolver('connection'),
     leadPagination: StudentTC.getResolver('pagination'),
+    distinctValues: StudentTC.getResolver('distinctValues'),
 };
 
 const LeadMutation = {
