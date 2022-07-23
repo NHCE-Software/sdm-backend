@@ -21,6 +21,7 @@ const signIn = {
     },
     resolve: async ({ args: { email, password } }) => {
         try {
+            
             const user = await User.emailExist(email);
             if (!user) {
                 return Promise.reject(new Error('User not found.'));

@@ -51,6 +51,9 @@ export const StudentSchema = new Schema(
         remark: {
             type: String,
         },
+        notes:{
+            type: String,
+        },
         internal: {
             bsno: {
                 type: String,
@@ -148,6 +151,9 @@ export const StudentSchema = new Schema(
                 bio: {
                     type: String,
                 },
+                others:{
+                    type: String,
+                }
             },
         },
         income: {
@@ -176,6 +182,7 @@ export const StudentSchema = new Schema(
 );
 
 StudentSchema.plugin(paginate);
+StudentSchema.index({ '$**': 'text' });
 StudentSchema.pre('insertMany', function (next) {
     var leads = this;
     leads.forEach((lead) => {
