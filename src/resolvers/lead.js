@@ -13,8 +13,36 @@ const addStudents = {
             await Student.bulkWrite(
                 leads.map((doc) => ({
                     updateOne: {
-                        filter: { phonenumber: doc.internal.enqno },
-                        update: doc,
+                        filter: { 'internal.enqno': doc.internal.enqno },
+                        update: {
+                            ...doc,
+                            grade: {
+                                ...doc.grade,
+                                pcmscore:
+                                    (parseFloat(
+                                        doc.grade.marks.chemistry || '0'
+                                    ) +
+                                        parseFloat(
+                                            doc.grade.marks.physics || '0'
+                                        ) +
+                                        parseFloat(
+                                            doc.grade.marks.maths || '0'
+                                        ) +
+                                        parseFloat(
+                                            doc.grade.marks.computer || '0'
+                                        ) +
+                                        parseFloat(
+                                            doc.grade.marks.electronics || '0'
+                                        ) +
+                                        parseFloat(
+                                            doc.grade.marks.others || '0'
+                                        ) +
+                                        parseFloat(
+                                            doc.grade.marks.bio || '0'
+                                        )) /
+                                    3,
+                            },
+                        },
                         upsert: true,
                     },
                 }))
@@ -83,5 +111,5 @@ const distinctValues = {
 module.exports = {
     addStudents,
     getStudents,
-    distinctValues
+    distinctValues,
 };
